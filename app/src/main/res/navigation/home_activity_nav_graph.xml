@@ -42,10 +42,10 @@
             app:destination="@id/homeCameraFragment" />
     </fragment>
     <fragment
-        android:id="@+id/settingFragment"
+        android:id="@+id/settingsFragment"
         android:name="com.example.tengeneza.SettingFragment"
-        android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting" >
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/action_settingFragment_to_homeCameraFragment"
             app:destination="@id/homeCameraFragment" />

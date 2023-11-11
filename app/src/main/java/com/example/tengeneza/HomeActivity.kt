@@ -38,10 +38,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.bottomNavigation.background = null
         binding.bottomNavigation.setOnItemSelectedListener {
             when(it.itemId){
-                R.id.bottom_home -> openFragment(HomeFragment())
+                R.id.bottom_inspect -> openFragment(InspectFragment())
                 R.id.bottom_explore -> openFragment(ExploreFragment())
                 R.id.bottom_report -> openFragment(ReportFragment())
-                R.id.bottom_profile -> openFragment(SettingFragment())
+                R.id.bottom_profile -> openFragment(SettingsFragment())
             }
             true
         }
@@ -50,10 +50,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.nav_inspect -> openFragment(InspectFragment())
-            R.id.nav_explore -> openFragment(ExploreFragment())
-            R.id.nav_report -> openFragment(ReportFragment())
-
+            R.id.nav_analytics -> openFragment(AnalyticsFragment())
+            R.id.nav_buchafu -> openFragment(ExploreFragment())
+            R.id.nav_setting -> openFragment(SettingsFragment())
+            R.id.nav_faq -> openFragment(FaqFragment())
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true

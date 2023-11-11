@@ -7,19 +7,29 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_inspect"
-            android:icon="@drawable/baseline_trending_up_24"
-            android:title="Inspection"/>
+            android:id="@+id/nav_analytics"
+            android:icon="@drawable/baseline_analytics_24"
+            android:title="Analytics"/>
 
         <item
-            android:id="@+id/nav_explore"
-            android:icon="@drawable/baseline_trending_up_24"
-            android:title="Explorer"/>
+            android:id="@+id/nav_buchafu"
+            android:icon="@drawable/baseline_energy_savings_leaf_24"
+            android:title="Buchafu"/>
 
         <item
-            android:id="@+id/nav_report"
-            android:icon="@drawable/baseline_trending_up_24"
-            android:title="Report"/>
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/baseline_settings_24"
+            android:title="Settings"/>
+
+        <item
+            android:id="@+id/nav_faq"
+            android:icon="@drawable/baseline_info_24"
+            android:title="FAQ"/>
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/baseline_logout_24"
+            android:title="Disconnect"/>
 
     </group>
 
