@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_activity_nav_graph"
+    app:startDestination="@id/homeCameraFragment">
+
+    <fragment
+        android:id="@+id/homeCameraFragment"
+        android:name="com.example.tengeneza.HomeCameraFragment"
+        android:label="fragment_home_camera"
+        tools:layout="@layout/fragment_home_camera" >
+        <action
+            android:id="@+id/action_homeCameraFragment_to_reportFragment"
+            app:destination="@id/reportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.example.tengeneza.ReportFragment"
+        android:label="fragment_report"
+        tools:layout="@layout/fragment_report" >
+        <action
+            android:id="@+id/action_reportFragment_to_homeCameraFragment"
+            app:destination="@id/homeCameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/inspectFragment"
+        android:name="com.example.tengeneza.InspectFragment"
+        android:label="fragment_inspect"
+        tools:layout="@layout/fragment_inspect" >
+        <action
+            android:id="@+id/action_inspectFragment_to_homeCameraFragment"
+            app:destination="@id/homeCameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.example.tengeneza.ExploreFragment"
+        android:label="fragment_explore"
+        tools:layout="@layout/fragment_explore" >
+        <action
+            android:id="@+id/action_exploreFragment_to_homeCameraFragment"
+            app:destination="@id/homeCameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.tengeneza.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_homeCameraFragment"
+            app:destination="@id/homeCameraFragment" />
+    </fragment>
+</navigation>

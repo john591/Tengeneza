@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "426534444704",
+    "project_id": "tengenezaapp",
+    "storage_bucket": "tengenezaapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426534444704:android:67fc6efcf14d828ed5f3c5",
+        "android_client_info": {
+          "package_name": "com.example.tengeneza"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmwWc0C4jgDnilDoATfgn6CZK63h09ayU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
