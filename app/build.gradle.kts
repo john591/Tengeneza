@@ -61,14 +61,23 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
-    //val cameraxVersion = "1.3.0-rc01"
-    val cameraxVersion = "1.4.0-alpha02"
+    val cameraxVersion = "1.3.0-rc01"
+    //val cameraxVersion = "1.4.0-alpha02"
 
     implementation("androidx.camera:camera-core:$cameraxVersion")
     implementation("androidx.camera:camera-camera2:$cameraxVersion")
     implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
-    implementation("androidx.camera:camera-view:$cameraxVersion")
+    implementation("androidx.camera:camera-video:$cameraxVersion")
 
     implementation("androidx.camera:camera-view:$cameraxVersion")
     implementation("androidx.camera:camera-extensions:$cameraxVersion")
+
+    //val tensorflowVersion = "0.4.0"
+
+    implementation("org.tensorflow:tensorflow-lite-task-version:0.4.0")
+    implementation("org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.0")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.9.0")
+    // Tensorflow Lite dependencies
+    implementation("org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2")
+    implementation("com.google.android.gms:play-services-tflite-gpu:16.2.0")
 }
