@@ -6,11 +6,94 @@
     tools:context=".ReportFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/viewFinder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="hello Report fragment"
-        android:gravity="center"
-        android:textSize="25sp"/>
+        android:layout_height="match_parent"/>
+
+    <Button
+        android:id="@+id/image_capture_button"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="250dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:elevation="2dp"
+        android:text="@string/take_photo" />
+
+    <TextView
+        android:id="@+id/latitude_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="40sp"
+        android:layout_gravity="center"
+        android:elevation="2dp"
+        android:text="yes yesk"
+        android:textColor="@color/green"/>
+
+    <TextView
+        android:id="@+id/longitude_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:layout_gravity="center"
+        android:elevation="2dp"
+        android:text="okokok"
+        android:textColor="@color/green"/>
+
+    <TextView
+        android:id="@+id/street_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="40sp"
+        android:layout_gravity="center"
+        android:elevation="2dp"
+        android:text="street"
+        android:textColor="@color/green"/>
+
+    <TextView
+        android:id="@+id/countryCode_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:layout_gravity="center"
+        android:elevation="2dp"
+        android:text="countryCode"
+        android:textColor="@color/green"/>
+
+    <TextView
+        android:id="@+id/countryName_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="40sp"
+        android:layout_gravity="center"
+        android:elevation="2dp"
+        android:text="countryName"
+        android:textColor="@color/green"/>
+
+    <TextView
+        android:id="@+id/city_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:layout_gravity="center"
+        android:elevation="2dp"
+        android:text="city"
+        android:textColor="@color/green"/>
+
+    <TextView
+        android:id="@+id/postalCode_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="40sp"
+        android:layout_gravity="center"
+        android:elevation="2dp"
+        android:text="postalCode"
+        android:textColor="@color/green"/>
 
 </FrameLayout>

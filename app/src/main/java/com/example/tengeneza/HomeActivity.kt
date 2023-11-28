@@ -1,11 +1,15 @@
 package com.example.tengeneza
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.window.OnBackInvokedDispatcher
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -17,6 +21,7 @@ import com.example.tengeneza.databinding.ActivityHomeBinding
 import com.google.android.material.navigation.NavigationView
 
 // It is like a MainActivity, it will be using with others fragments
+
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
 
     private lateinit var navController: NavController
@@ -24,6 +29,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (!hasCameraPermission()){
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.CAMERA), 0
+            )
+        }
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -78,4 +88,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navController = findNavController(R.id.navHostHomeActivityFragmentContainerView)
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
+    private fun hasCameraPermission() = ContextCompat.checkSelfPermission(
+        this, Manifest.permission.CAMERA
+    ) == PackageManager.PERMISSION_GRANTED
+
 }
