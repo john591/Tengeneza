@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReportFragment">
+    tools:context=".ui.fragments.ReportFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -21,7 +21,7 @@
         android:layout_marginBottom="50dp"
         android:elevation="2dp"
         android:text="@string/take_photo" />
-
+    <!-- -->
     <TextView
         android:id="@+id/latitude_view"
         android:layout_width="wrap_content"
@@ -94,6 +94,28 @@
         android:layout_gravity="center"
         android:elevation="2dp"
         android:text="postalCode"
+        android:textColor="@color/green"/>
+
+    <TextView
+        android:id="@+id/currentuserId_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="40sp"
+        android:layout_gravity="center"
+        android:elevation="2dp"
+        android:text="currentuser"
+        android:textColor="@color/green"/>
+
+    <TextView
+        android:id="@+id/currentuserEmail_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="40sp"
+        android:layout_gravity="center"
+        android:elevation="2dp"
+        android:text="currentuser Email"
         android:textColor="@color/green"/>
 
 </FrameLayout>

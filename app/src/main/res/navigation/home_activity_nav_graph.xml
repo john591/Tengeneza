@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeCameraFragment"
-        android:name="com.example.tengeneza.HomeCameraFragment"
+        android:name="com.example.tengeneza.ui.fragments.HomeCameraFragment"
         android:label="fragment_home_camera"
         tools:layout="@layout/fragment_home_camera" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/reportFragment"
-        android:name="com.example.tengeneza.ReportFragment"
+        android:name="com.example.tengeneza.ui.fragments.ReportFragment"
         android:label="fragment_report"
         tools:layout="@layout/fragment_report" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/inspectFragment"
-        android:name="com.example.tengeneza.InspectFragment"
+        android:name="com.example.tengeneza.ui.fragments.InspectFragment"
         android:label="fragment_inspect"
         tools:layout="@layout/fragment_inspect" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/exploreFragment"
-        android:name="com.example.tengeneza.ExploreFragment"
+        android:name="com.example.tengeneza.ui.fragments.ExploreFragment"
         android:label="fragment_explore"
         tools:layout="@layout/fragment_explore" >
         <action

@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.tengeneza"
-        minSdk = 28
+        minSdk = 33
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -81,6 +81,7 @@ dependencies {
 
     // User's current location dependenci
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
 
    // val cameraxVersion = "1.3.0-rc01"
     val cameraxVersion = "1.4.0-alpha02"
@@ -94,7 +95,7 @@ dependencies {
     implementation("androidx.camera:camera-extensions:$cameraxVersion")
 
     //val tensorflowVersion = "0.4.0"
-/*
+  /*
     implementation("org.tensorflow:tensorflow-lite-task-version:0.4.0")
     implementation("org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.0")
     implementation("org.tensorflow:tensorflow-lite-gpu:2.9.0")

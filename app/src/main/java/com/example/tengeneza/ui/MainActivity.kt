@@ -1,9 +1,10 @@
-package com.example.tengeneza
+package com.example.tengeneza.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.example.tengeneza.R
 
 class MainActivity : AppCompatActivity() {
 

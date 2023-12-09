@@ -1,4 +1,4 @@
-package com.example.tengeneza
+package com.example.tengeneza.ui.fragments
 
 import android.Manifest
 import android.content.ContentValues
@@ -9,7 +9,6 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
@@ -17,10 +16,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
@@ -34,35 +31,68 @@ import androidx.fragment.app.Fragment
 import com.example.tengeneza.databinding.FragmentReportBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.auth.FirebaseAuth
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-
 typealias LumaListener = (luma: Double) -> Unit
-
 class ReportFragment : Fragment() {
 
+
+    // Use a constant to identify the camera permission request
+    private val CAMERA_PERMISSION_REQUEST_CODE = 100
+
+    // Get the current Firebase user
+    private val currentUser = FirebaseAuth.getInstance().currentUser
+
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var tvlatitude: TextView
-    private lateinit var tvLongitude: TextView
 
     private lateinit var binding: FragmentReportBinding
 
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireContext())
 
-        getCurrentLocation();
+        // Check location permissions
+        if (checkLocationPermissions()) {
+
+            getCurrentLocation()
+        } else {
+            requestLocationPermissions()
+        }
+/*
+        if (currentUser!= null){
+            // User is signed in
+            val uid = currentUser.uid
+            val email = currentUser.email
+            val url = URL("https://com.example.tengeneza")
+            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+
+            // Set request method
+            connection.requestMethod = "GET"
+
+            // Send request
+            connection.connect()
+
+            //Get cookies from the response
+            val cookies = connection.headerFields["Set-Cookie"]
+
+            println("User email: $email")
+
+        }else{
+            println("No user is currently signed in")
+
+        }*/
 
         // Inflate the layout for this fragment
         binding = FragmentReportBinding.inflate(inflater, container, false)
@@ -72,12 +102,16 @@ class ReportFragment : Fragment() {
         ){
 
         }
+        startCamera()
         // Request camera permissions
-        if (allPermissionsGranted()) {
+        /*if (allPermissionsGranted()) {
             startCamera()
         } else {
             requestPermissions()
-        }
+        }*/
+
+        binding.currentuserIdView.text = currentUser?.uid
+        binding.currentuserEmailView.text = currentUser?.email
 
         // Set up the listeners for take photo and video capture buttons
         binding.imageCaptureButton.setOnClickListener {
@@ -90,7 +124,28 @@ class ReportFragment : Fragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun checkLocationPermissions(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestLocationPermissions() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            PERMISSION_REQUEST_ACCESS_LOCATION
+        )
+    }
+
     private fun getCurrentLocation(){
         if(checkPermissions()){
             if (isLocationEnabled()){
@@ -107,46 +162,40 @@ class ReportFragment : Fragment() {
                     return
                 }
                 fusedLocationProviderClient.lastLocation.addOnCompleteListener(requireActivity()) { task->
-                    val location:Location?=task.result
+                    val location: Location?=task.result
                     if (location==null){
-                        Toast.makeText(requireContext(), "Null", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Non localiser", Toast.LENGTH_SHORT).show()
                     }else{
-                        Toast.makeText(requireContext(), "Reussi", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "L'endroit localiser'", Toast.LENGTH_SHORT)
+                            .show()
                         val geocoder = Geocoder(requireContext(), Locale.getDefault())
-                        val latitude = location?.latitude
-                        val longitude = location?.longitude
+                        val latitude = location.latitude
+                        val longitude = location.longitude
                         val maxResult = 1
 
-                        if (latitude != null) {
-                            if (longitude != null) {
-                                geocoder.getFromLocation(latitude, longitude, maxResult,
-                                    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-                                    object: Geocoder.GeocodeListener{
-                                        override fun onGeocode(addresses: MutableList<Address>) {
-                                            val address = addresses[0]
-                                            val streetAddress = address.getAddressLine(0)
-                                            val city = address.adminArea
-                                            val countryCode = address.countryCode
-                                            val countryName = address.countryName
-                                            val postalCode = address.postalCode
-                                            /*binding.countryCodeView.text= countryCode
-                                            binding.postalCodeView.text= postalCode
-                                            binding.countryNameView.text= countryName
-                                            binding.cityView.text= city
-                                            binding.streetView.text= streetAddress*/
-                                        }
+                        geocoder.getFromLocation(latitude, longitude, maxResult,
+                            object: Geocoder.GeocodeListener {
+                                override fun onGeocode(addresses: MutableList<Address>) {
+                                    val address = addresses[0]
+                                    val streetAddress = address.getAddressLine(0)
+                                    val city = address.adminArea
+                                    val countryCode = address.countryCode
+                                    val countryName = address.countryName
+                                    val postalCode = address.postalCode
 
-                                        override fun onError(errorMessage: String?) {
-                                            super.onError(errorMessage)
-                                        }
-                                    })
-                            }
-                        }
-                        /*binding.latitudeView.text = location?.latitude.toString()
-                        binding.longitudeView.text= location?.longitude.toString()*/
+                                    binding.countryCodeView.text= countryCode
+                                    binding.postalCodeView.text= postalCode
+                                    binding.countryNameView.text= countryName
+                                    binding.cityView.text= city
+                                    binding.streetView.text= streetAddress
+                                }
 
-                        //tvlatitude.text=""+location.latitude
-                        //tvlatitude.text=""+location.longitude
+                                override fun onError(errorMessage: String?) {
+                                    super.onError(errorMessage)
+                                }
+                            })
+                        binding.latitudeView.text = latitude.toString()
+                        binding.longitudeView.text= longitude.toString()
                     }
 
                 }
@@ -164,10 +213,16 @@ class ReportFragment : Fragment() {
     }
 
     private fun isLocationEnabled():Boolean{
-        val locationManager:LocationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+        val locationManager: LocationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        try {
+            return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
+        return false
+        /*return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
             LocationManager.NETWORK_PROVIDER
-        )
+        )*/
     }
 
 
@@ -175,21 +230,63 @@ class ReportFragment : Fragment() {
         ActivityCompat.requestPermissions(
             requireActivity(), arrayOf(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
             PERMISSION_REQUEST_ACCESS_LOCATION
         )
     }
 
     private fun checkPermissions():Boolean{
-        if (ActivityCompat.checkSelfPermission(requireActivity(),
-            Manifest.permission.ACCESS_COARSE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            return true
-        }
-        return false
+        return (ActivityCompat.checkSelfPermission(requireActivity(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+                == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED)
     }
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                Toast.makeText(requireContext(), "Accordé", Toast.LENGTH_SHORT).show()
+                getCurrentLocation()
+            } else {
+                Toast.makeText(requireContext(), "Non accordé", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permission already granted
+            Toast.makeText(requireContext(), "Accordé", Toast.LENGTH_SHORT).show()
+            getCurrentLocation()
+        } else {
+            // Permission not granted, request it
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    // Check if the camera permission is granted
+    private fun checkCameraPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    // Request camera permission
+    private fun requestCameraPermission() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.CAMERA),
+            CAMERA_PERMISSION_REQUEST_CODE
+        )
+    }
+
     @Suppress("DEPRECATION")
     fun onRequestPermissionResult(
         requestCode: Int,
@@ -199,14 +296,25 @@ class ReportFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode== PERMISSION_REQUEST_ACCESS_LOCATION){
-            if (grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+            if (grantResults.isNotEmpty() && grantResults[0]== PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(requireContext(), "Accorder", Toast.LENGTH_SHORT).show()
                 getCurrentLocation()
             } else {
                 Toast.makeText(requireContext(), "Non Accorder", Toast.LENGTH_SHORT).show()
             }
         }
+
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            // Check if the user granted the camera permission
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, proceed with camera-related operations
+                startCamera()
+            } else {
+                // Permission denied, handle accordingly (e.g., show a message or take alternative actions)
+            }
+        }
     }
+
 
     private fun takePhoto() {
         // Get a stable reference of the modifiable image capture use case
@@ -218,14 +326,15 @@ class ReportFragment : Fragment() {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
             //put(MediaStore.Images.Media.RELATIVE_PATH, "/Tengeneza/")
-            put(MediaStore.Images.Media.RELATIVE_PATH, "/Tengeneza/")
+            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Tengeneza")
         }
 
         // Create output options object which contains file + metadata
         val contentResolver = requireActivity().contentResolver
         val outputOptions = ImageCapture.OutputFileOptions.Builder(
             contentResolver,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues).build()
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues
+        ).build()
             //.Builder( contentResolver, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues).build()
 
         // Set up image capture listener, which is triggered after photo has
@@ -238,11 +347,10 @@ class ReportFragment : Fragment() {
                     Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                 }
 
-                override fun
-                        onImageSaved(output: ImageCapture.OutputFileResults){
+                override fun onImageSaved(output: ImageCapture.OutputFileResults){
                     val msg = "Image capturée avec succès: ${output.savedUri}"
                     Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-                    Log.d(TAG,msg)
+                    Log.d(TAG, msg)
                 }
             }
         )
@@ -299,13 +407,13 @@ class ReportFragment : Fragment() {
     }
 
    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(requireContext(),it) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
    }
-
+/*
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
-    }
+    }*/
 
     companion object {
         private const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
@@ -329,9 +437,11 @@ class ReportFragment : Fragment() {
                     permissionGranted = false
             }
             if (!permissionGranted) {
-                Toast.makeText(requireContext(),
+                Toast.makeText(
+                    requireContext(),
                     "Permission request denied",
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 startCamera()
             }
