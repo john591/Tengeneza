@@ -1,3 +1,15 @@
 package com.example.tengeneza.models
+import com.google.firebase.firestore.GeoPoint
 
-data class TengenezaData(val usrid: String)
+data class TengenezaData(
+    var currentUser: String,
+    var timestamp: Long,
+    var name: String,
+    var geoPoint: GeoPoint,
+    var streetAddress: String,
+    var city: String,
+    var countryCode: String,
+    var countryName: String,
+    var postalCode: String){
+
+}

@@ -29,9 +29,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.tengeneza.databinding.FragmentReportBinding
+import com.example.tengeneza.models.TengenezaData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -40,7 +45,10 @@ import java.util.concurrent.Executors
 
 typealias LumaListener = (luma: Double) -> Unit
 class ReportFragment : Fragment() {
-
+    // Initialize Firebase Firestore reference
+    private val dB: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val storage: FirebaseStorage = FirebaseStorage.getInstance()
+    private lateinit var databaseReference: StorageReference
 
     // Use a constant to identify the camera permission request
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
@@ -70,29 +78,6 @@ class ReportFragment : Fragment() {
         } else {
             requestLocationPermissions()
         }
-/*
-        if (currentUser!= null){
-            // User is signed in
-            val uid = currentUser.uid
-            val email = currentUser.email
-            val url = URL("https://com.example.tengeneza")
-            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-
-            // Set request method
-            connection.requestMethod = "GET"
-
-            // Send request
-            connection.connect()
-
-            //Get cookies from the response
-            val cookies = connection.headerFields["Set-Cookie"]
-
-            println("User email: $email")
-
-        }else{
-            println("No user is currently signed in")
-
-        }*/
 
         // Inflate the layout for this fragment
         binding = FragmentReportBinding.inflate(inflater, container, false)
@@ -182,6 +167,19 @@ class ReportFragment : Fragment() {
                                     val countryCode = address.countryCode
                                     val countryName = address.countryName
                                     val postalCode = address.postalCode
+
+                                    val sharedPreferences = requireContext().getSharedPreferences("LocationPotholesData", Context.MODE_PRIVATE)
+                                    val editor = sharedPreferences.edit()
+                                    // Save data
+                                    editor.putString("streetAdress", streetAddress)
+                                    editor.putString("city", city)
+                                    editor.putString("countryName", countryName)
+                                    editor.putFloat("latitude", latitude.toFloat())
+                                    editor.putFloat("longitude", longitude.toFloat())
+                                    editor.putString("countryCode", countryCode)
+                                    editor.putString("postalCode", postalCode)
+                                    // Apply changes
+                                    editor.apply()
 
                                     binding.countryCodeView.text= countryCode
                                     binding.postalCodeView.text= postalCode
@@ -315,6 +313,9 @@ class ReportFragment : Fragment() {
         }
     }
 
+    fun getCurrentTimestamp(): Long {
+        return System.currentTimeMillis()
+    }
 
     private fun takePhoto() {
         // Get a stable reference of the modifiable image capture use case
@@ -322,6 +323,7 @@ class ReportFragment : Fragment() {
 
         // Create time stamped name and MediaStore entry.
         val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis())
+        val timestamp = getCurrentTimestamp()
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
@@ -351,6 +353,51 @@ class ReportFragment : Fragment() {
                     val msg = "Image capturée avec succès: ${output.savedUri}"
                     Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
+
+
+                    val sharedPreferences = requireContext().getSharedPreferences("LocationPotholesData", Context.MODE_PRIVATE)
+                    // Retrieve data (provide default values if not found)
+                    val countryName = sharedPreferences.getString("countryName", "DefaultCountry")
+                    val latitude = sharedPreferences.getFloat("latitude", 0.0f).toDouble()
+                    val longitude = sharedPreferences.getFloat("longitude", 0.0f).toDouble()
+                    val streetAddress = sharedPreferences.getString("streetAdress","DefaultStreet")
+                    val city = sharedPreferences.getString("city","DefaultCity")
+                    val countryCode = sharedPreferences.getString("countryCode","CD")
+                    val postalCode = sharedPreferences.getString("postalCode","243")
+                    val geoPoint = GeoPoint(latitude,longitude)
+
+                    val user = currentUser?.uid
+                    val locationPothole = TengenezaData(user.toString(),timestamp, name, geoPoint, streetAddress.toString(),city.toString(), countryCode.toString(), countryName.toString(), postalCode.toString())
+                    val collectionReference = dB.collection(currentUser?.email.toString())
+                    // Add the data to Firestore
+                    collectionReference.add(locationPothole)
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Merci de nous avoir signaler", Toast.LENGTH_SHORT)
+                                .show()
+                            // Create an editor to modify the SharedPreferences
+                            val editor = sharedPreferences.edit()
+
+                            // Remove the value associated with the "countryName" key
+                            editor.remove("latitude")
+                            editor.remove("longitude")
+                            editor.remove("streetAdress")
+                            editor.remove("city")
+                            editor.remove("countryCode")
+                            editor.remove("countryName")
+                            editor.remove("postalCode")
+
+                            // Apply the changes
+                            editor.apply()
+
+                            val intent = Intent(requireActivity(), HomeActivity::class.java)
+                            startActivity(intent)
+                            requireActivity().finish()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(requireContext(), "Erreur au moment d'envoie", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
                 }
             }
         )
@@ -409,11 +456,11 @@ class ReportFragment : Fragment() {
    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
    }
-/*
+
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
-    }*/
+    }
 
     companion object {
         private const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
