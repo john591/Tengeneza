@@ -9,6 +9,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
@@ -37,9 +38,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.UUID
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -49,6 +52,8 @@ class ReportFragment : Fragment() {
     private val dB: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val storage: FirebaseStorage = FirebaseStorage.getInstance()
     private lateinit var databaseReference: StorageReference
+    private lateinit var firebaseStorage: FirebaseStorage
+    private lateinit var storageRef: StorageReference
 
     // Use a constant to identify the camera permission request
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
@@ -223,7 +228,6 @@ class ReportFragment : Fragment() {
         )*/
     }
 
-
     private fun requestPermission(){
         ActivityCompat.requestPermissions(
             requireActivity(), arrayOf(
@@ -320,6 +324,9 @@ class ReportFragment : Fragment() {
     private fun takePhoto() {
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
+        // Initialize Firebase Storage
+        firebaseStorage = FirebaseStorage.getInstance()
+        storageRef = firebaseStorage.reference
 
         // Create time stamped name and MediaStore entry.
         val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis())
@@ -354,8 +361,18 @@ class ReportFragment : Fragment() {
                     Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
 
+                    val imageUri = output.savedUri
+
+                    // Upload the captured image to Firebase Storage
+                    if (imageUri != null) {
+                        uploadImage(imageUri)
+                    } else {
+                        Log.e(TAG, "Saved image URI is null.")
+                        // Handle the case where the saved image URI is null
+                    }
 
                     val sharedPreferences = requireContext().getSharedPreferences("LocationPotholesData", Context.MODE_PRIVATE)
+                    val PotholeImageData = requireContext().getSharedPreferences("PotholeImageData", Context.MODE_PRIVATE)
                     // Retrieve data (provide default values if not found)
                     val countryName = sharedPreferences.getString("countryName", "DefaultCountry")
                     val latitude = sharedPreferences.getFloat("latitude", 0.0f).toDouble()
@@ -365,9 +382,10 @@ class ReportFragment : Fragment() {
                     val countryCode = sharedPreferences.getString("countryCode","CD")
                     val postalCode = sharedPreferences.getString("postalCode","243")
                     val geoPoint = GeoPoint(latitude,longitude)
+                    val potholeImage = PotholeImageData.getString("potholeImage","jpg")
 
                     val user = currentUser?.uid
-                    val locationPothole = TengenezaData(user.toString(),timestamp, name, geoPoint, streetAddress.toString(),city.toString(), countryCode.toString(), countryName.toString(), postalCode.toString())
+                    val locationPothole = TengenezaData(user.toString(),timestamp,potholeImage.toString(), name, geoPoint, streetAddress.toString(),city.toString(), countryCode.toString(), countryName.toString(), postalCode.toString())
                     val collectionReference = dB.collection(currentUser?.email.toString())
                     // Add the data to Firestore
                     collectionReference.add(locationPothole)
@@ -376,6 +394,7 @@ class ReportFragment : Fragment() {
                                 .show()
                             // Create an editor to modify the SharedPreferences
                             val editor = sharedPreferences.edit()
+                            val editor2 = PotholeImageData.edit()
 
                             // Remove the value associated with the "countryName" key
                             editor.remove("latitude")
@@ -385,9 +404,11 @@ class ReportFragment : Fragment() {
                             editor.remove("countryCode")
                             editor.remove("countryName")
                             editor.remove("postalCode")
+                            editor2.remove("potholeImage")
 
                             // Apply the changes
                             editor.apply()
+                            editor2.apply()
 
                             val intent = Intent(requireActivity(), HomeActivity::class.java)
                             startActivity(intent)
@@ -401,6 +422,35 @@ class ReportFragment : Fragment() {
                 }
             }
         )
+    }
+    private fun uploadImage(imageUri: Uri) {
+        // Create a unique filename for the image
+        val filename = "${UUID.randomUUID()}.jpg"
+        //val name = "${UUID.randomUUID()}.jpg"
+
+        val sharedPreferencesImage = requireContext().getSharedPreferences("PotholeImageData", Context.MODE_PRIVATE)
+        val editor = sharedPreferencesImage.edit()
+        // Save data
+        editor.putString("potholeImage", filename)
+        // Apply changes
+        editor.apply()
+
+        // Reference to the image in Firebase Storage
+        val storageRef: StorageReference = storageRef.child("potholesImages/$filename")
+
+        // Upload the image
+        val uploadTask: UploadTask = storageRef.putFile(imageUri)
+
+        // Listen for the success or failure of the upload
+        uploadTask.addOnCompleteListener {
+            if (uploadTask.isSuccessful) {
+                // Image uploaded successfully
+                println("Image uploaded successfully. Path: ${storageRef.path}")
+            } else {
+                // Handle failure
+                println("Failed to upload image.")
+            }
+        }
     }
 
     private fun startCamera() {
