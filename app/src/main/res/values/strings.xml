@@ -15,4 +15,5 @@
     <string name="email">Email</string>
     <string name="start_capture">Start capture</string>
     <string name="take_photo">Take photo</string>
+    <string name="google_map_api_key">AIzaSyCyp9hCNb5wvrko2eAXPu4ekU4lVIvJmOQ</string>
 </resources>

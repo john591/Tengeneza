@@ -94,6 +94,9 @@ dependencies {
     implementation("androidx.camera:camera-view:$cameraxVersion")
     implementation("androidx.camera:camera-extensions:$cameraxVersion")
 
+    // Google maps dependencies
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+
     //val tensorflowVersion = "0.4.0"
   /*
     implementation("org.tensorflow:tensorflow-lite-task-version:0.4.0")

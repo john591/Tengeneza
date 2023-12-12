@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -26,6 +27,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tengeneza"
         tools:targetApi="tiramisu">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_map_api_key"/>
+
+
         <activity
             android:name=".ui.fragments.HomeActivity"
             android:exported="true"

@@ -1,5 +1,7 @@
 package com.example.tengeneza.ui.fragments
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,17 @@ class WelcomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val userInfoSharePref = requireContext().getSharedPreferences("UserInfoSharePref", Context.MODE_PRIVATE)
+        val getEmail = userInfoSharePref.getString("Email", "")
+        val getUserID = userInfoSharePref.getString("ID","")
+
+        if (getEmail != "" && getUserID != ""){
+            val intent = Intent(activity, HomeActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
+        }
+
         // Inflate the layout for this fragment
         binding = FragmentWelcomeBinding.inflate(inflater, container, false)
 
