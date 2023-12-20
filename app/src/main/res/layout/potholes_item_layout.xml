@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardElevation="3dp"
+    android:layout_margin="15dp"
+    android:foreground="?selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:id="@+id/potholeImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:clickable="true"
+            android:contentDescription="PotholeImage" />
+
+            <TextView
+                android:id="@+id/city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="city"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:id="@+id/streetAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="street"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:id="@+id/currentDateTimeString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="currentDateTimeString"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:id="@+id/geoPoint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:clickable="true"
+                android:foreground="?selectableItemBackground"
+                android:text="geop"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
