@@ -3,7 +3,7 @@ import com.google.firebase.firestore.GeoPoint
 
 data class TengenezaData(
     var currentUser: String,
-    var timestamp: Long,
+    var currentDateTimeString: String,
     var potholeImage: String,
     var name: String,
     var geoPoint: GeoPoint,

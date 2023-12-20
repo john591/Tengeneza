@@ -41,6 +41,8 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 import java.util.UUID
 import java.util.concurrent.ExecutorService
@@ -50,8 +52,8 @@ typealias LumaListener = (luma: Double) -> Unit
 class ReportFragment : Fragment() {
     // Initialize Firebase Firestore reference
     private val dB: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val storage: FirebaseStorage = FirebaseStorage.getInstance()
-    private lateinit var databaseReference: StorageReference
+    private lateinit var storageReference: StorageReference
+    private lateinit var firebaseFirestore: FirebaseFirestore
     private lateinit var firebaseStorage: FirebaseStorage
     private lateinit var storageRef: StorageReference
 
@@ -99,6 +101,8 @@ class ReportFragment : Fragment() {
         } else {
             requestPermissions()
         }*/
+        initVars()
+        registerClickEvents()
 
         binding.currentuserIdView.text = currentUser?.uid
         binding.currentuserEmailView.text = currentUser?.email
@@ -112,6 +116,15 @@ class ReportFragment : Fragment() {
 
 
         return binding.root
+    }
+    private fun initVars(){
+        storageReference = FirebaseStorage.getInstance().reference.child("potholesImages")
+        firebaseFirestore = FirebaseFirestore.getInstance()
+    }
+    private fun registerClickEvents(){
+        binding.imageCaptureButton.setOnClickListener{
+            takePhoto()
+        }
     }
 
     private fun checkLocationPermissions(): Boolean {
@@ -320,6 +333,12 @@ class ReportFragment : Fragment() {
     fun getCurrentTimestamp(): Long {
         return System.currentTimeMillis()
     }
+    fun getCurrentDateTime(): String {
+        val currentDateTime = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss") // Define the format you want
+
+        return currentDateTime.format(formatter)
+    }
 
     private fun takePhoto() {
         // Get a stable reference of the modifiable image capture use case
@@ -331,6 +350,8 @@ class ReportFragment : Fragment() {
         // Create time stamped name and MediaStore entry.
         val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis())
         val timestamp = getCurrentTimestamp()
+        val currentDateTimeString = getCurrentDateTime()
+
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
@@ -385,8 +406,8 @@ class ReportFragment : Fragment() {
                     val potholeImage = PotholeImageData.getString("potholeImage","jpg")
 
                     val user = currentUser?.uid
-                    val locationPothole = TengenezaData(user.toString(),timestamp,potholeImage.toString(), name, geoPoint, streetAddress.toString(),city.toString(), countryCode.toString(), countryName.toString(), postalCode.toString())
-                    val collectionReference = dB.collection(currentUser?.email.toString())
+                    val locationPothole = TengenezaData(user.toString(),currentDateTimeString,potholeImage.toString(), name, geoPoint, streetAddress.toString(),city.toString(), countryCode.toString(), countryName.toString(), postalCode.toString())
+                    val collectionReference = dB.collection(currentUser?.email.toString()) // Here I have to change the collection. "potholesReports"
                     // Add the data to Firestore
                     collectionReference.add(locationPothole)
                         .addOnSuccessListener {
