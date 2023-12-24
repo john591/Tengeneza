@@ -34,7 +34,7 @@ class InspectFragment : Fragment(), OnMapReadyCallback {
     // Reference to the Firestore database
     private val db = FirebaseFirestore.getInstance()
     // Reference to the collection and document you want to retrieve data from
-    private val collectionReference = db.collection("johnkalume0@gmail.com") // Replace with your collection name
+    private val collectionReference = db.collection("potholesDataCollection") // Replace with your collection name
     // Query the collection (optional, you can also get all documents in the collection)
     // For example, getting documents where a specific field equals a certain value
     // val query = collectionReference.whereEqualTo("fieldName", "fieldValue")

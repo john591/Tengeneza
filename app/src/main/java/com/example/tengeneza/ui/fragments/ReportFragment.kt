@@ -407,7 +407,7 @@ class ReportFragment : Fragment() {
 
                     val user = currentUser?.uid
                     val locationPothole = TengenezaData(user.toString(),currentDateTimeString,potholeImage.toString(), name, geoPoint, streetAddress.toString(),city.toString(), countryCode.toString(), countryName.toString(), postalCode.toString())
-                    val collectionReference = dB.collection(currentUser?.email.toString()) // Here I have to change the collection. "potholesReports"
+                    val collectionReference = dB.collection("potholesDataCollection") // Here I have to change the collection. "potholesReports"
                     // Add the data to Firestore
                     collectionReference.add(locationPothole)
                         .addOnSuccessListener {

@@ -47,7 +47,7 @@ class ExploreFragment : Fragment() {
     private fun getData(){
         val firestore = FirebaseFirestore.getInstance()
         val storageReference = FirebaseStorage.getInstance().reference
-        val collectionReference = firestore.collection("johnkalume0@gmail.com")
+        val collectionReference = firestore.collection("potholesDataCollection")
 
         collectionReference.addSnapshotListener{ snapshot, exception ->
             if (exception != null){
