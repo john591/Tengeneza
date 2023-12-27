@@ -3,16 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:name="android.hardware.camera.any" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -21,14 +21,13 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/tengeneza"
         android:label="@string/app_name"
-
         android:supportsRtl="true"
         android:theme="@style/Theme.Tengeneza"
         tools:targetApi="tiramisu">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_map_api_key"/>
+            android:value="@string/google_map_api_key" />
 
         <activity
             android:name=".ui.fragments.HomeActivity"
@@ -39,16 +38,20 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="true"
-            android:label="Tengeneza"
-            android:theme="@style/Theme.Tengeneza">
+        <activity android:name=".ui.SplashScreenActivity"
+            android:theme="@style/Theme.Tengeneza"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:label="Tengeneza"
+            android:theme="@style/Theme.Tengeneza">
         </activity>
     </application>
 

@@ -2,8 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="green">#00FF00</color>
-    <color name="grey">#ff424242</color>
+    <color name="green">#2ea023</color>
+    <color name="green2">#6ec83e</color>
+    <color name="dark">#333333</color>
+    <color name="darkBlue">#000080</color>
+    <color name="grey">#aaa</color>
+    <color name="darkGrey">#ff424242</color>
     <color name="red">#FF0000</color>
     <color name="teal_700">#FF018786</color>
     <color name="teal_200">#FF03DAC5</color>
@@ -11,4 +15,11 @@
     <color name="primaryColor">#FF03DAC5</color>
     <color name="accentColor">#2ecc71</color>
     <color name="app_theme">#FF03DAC5</color>
+
+    <!-- Define your dark theme colors here -->
+    <color name="dark_primary">#303030</color> <!-- Dark primary color -->
+    <color name="dark_primary_variant">#1a1a1a</color> <!-- Dark primary variant color -->
+    <color name="dark_secondary">#455a64</color> <!-- Dark secondary color -->
+    <color name="dark_background">#121212</color> <!-- Dark background color -->
+    <color name="dark_text">#ffffff</color> <!-- Dark text color -->
 </resources>

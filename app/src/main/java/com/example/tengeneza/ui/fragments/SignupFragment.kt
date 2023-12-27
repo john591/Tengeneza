@@ -78,6 +78,9 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
         binding.loginRedirectText.setOnClickListener{
             it.findNavController().navigate(R.id.action_signupFragment_to_loginFragment)
         }
+        binding.goToLoginButton.setOnClickListener{
+            it.findNavController().navigate(R.id.action_signupFragment_to_loginFragment)
+        }
 
         return binding.root
     }

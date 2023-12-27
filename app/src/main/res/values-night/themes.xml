@@ -1,7 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Tengeneza" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <!--style name="Base.Theme.Tengeneza" parent="Theme.Material3.DayNight.NoActionBar">
+
+    </style-->
+    <style name="Base.Theme.Tengeneza" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryVariant">@color/dark</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorHighlight">@color/black</item>
+        <item name="android:statusBarColor">@color/green</item>
     </style>
+
+    <style name="Theme.Tengeneza" parent="Base.Theme.Tengeneza" />
 </resources>

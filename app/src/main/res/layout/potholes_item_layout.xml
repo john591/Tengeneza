@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginHorizontal="10dp"
-    android:layout_marginVertical="10dp"
-    app:cardCornerRadius="10dp"
-    app:cardBackgroundColor="@color/white"
-    app:cardElevation="3dp"
-    android:layout_margin="15dp"
-    android:foreground="?selectableItemBackground">
+    android:layout_margin="5dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,6 +23,7 @@
             android:id="@+id/potholeImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:layout_weight="1"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:clickable="true"
@@ -64,7 +66,7 @@
             <TextView
                 android:id="@+id/geoPoint"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="48dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -72,8 +74,27 @@
                 android:foreground="?selectableItemBackground"
                 android:text="geop"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:contentDescription="Clickable GeoPoint" />
+
+            <Button
+                android:id="@+id/button_open_map"
+                android:layout_width="68dp"
+                android:layout_height="48dp"
+                style="@style/Widget.MaterialComponents.Button"
+                android:text="Tenge"
+                android:textSize="10sp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="8dp"
+                app:backgroundTint="@color/green2"/>
 
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/dotted_border"
+        android:layout_gravity="bottom"/>
+
+</FrameLayout>

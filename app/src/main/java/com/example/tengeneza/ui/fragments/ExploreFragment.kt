@@ -1,12 +1,21 @@
 package com.example.tengeneza.ui.fragments
 
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tengeneza.adapters.PotholeItemClickListener
 import com.example.tengeneza.adapters.PotholesAdapterClass
 import com.example.tengeneza.databinding.FragmentExploreBinding
 import com.example.tengeneza.models.PotholeData
@@ -14,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 
 
-class ExploreFragment : Fragment() {
+class ExploreFragment : Fragment(), PotholeItemClickListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var potholesAdapter: PotholesAdapterClass
@@ -25,6 +34,7 @@ class ExploreFragment : Fragment() {
     lateinit var streetAddressList: Array<String>
     lateinit var cityList:Array<String>
     private lateinit var binding: FragmentExploreBinding
+    private val LOCATION_PERMISSION_REQUEST_CODE = 123
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,14 +45,83 @@ class ExploreFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
 
         dataList = arrayListOf<PotholeData>()
-        potholesAdapter = PotholesAdapterClass(dataList)
+        potholesAdapter = PotholesAdapterClass(dataList, this)
         recyclerView.adapter = potholesAdapter
         // Set layout manager according to your requirement
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            LOCATION_PERMISSION_REQUEST_CODE
+        )
 
         getData()
         return binding.root
     }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            LOCATION_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted, you can now use the location API
+                    // Call the openMapWithGeoPoint function here
+                } else {
+                    // Permission denied, handle accordingly
+                }
+            }
+            // Handle other permission requests if needed
+            // ...
+        }
+    }
+
+    override fun onOpenMapClicked(geoPoint: String) {
+        openMapWithGeoPoint(geoPoint)
+    }
+    private fun openMapWithGeoPoint(geoPoint: String) {
+        // Parse the geoPoint to extract latitude and longitude
+        val destinationGeoPointArray = geoPoint.split(",")
+        val destinationLatitude = destinationGeoPointArray[0].toDouble()
+        val destinationLongitude = destinationGeoPointArray[1].toDouble()
+
+        // Get the user's current location
+        val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val location = locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            if (location != null) {
+                val currentLatitude = location.latitude
+                val currentLongitude = location.longitude
+
+                // Create a Uri with the current location and destination GeoPoint data
+                val mapUri: Uri = Uri.parse("geo:$currentLatitude,$currentLongitude?q=$destinationLatitude,$destinationLongitude")
+
+                // Create an Intent to open the map app
+                val mapIntent = Intent(Intent.ACTION_VIEW, mapUri)
+                mapIntent.setPackage("com.google.android.apps.maps") // Specify the map app package
+
+                // Check if there is a map app available to handle the intent
+                if (mapIntent.resolveActivity(requireActivity().packageManager) != null) {
+                    startActivity(mapIntent)
+                } else {
+                    Log.e("ExploreFragment", "No map app is installed")
+                    // Handle the case where no map app is installed
+                    // You can show a message or prompt the user to install a map app
+                }
+            } else {
+                Log.e("ExploreFragment", "Unable to get current location")
+            }
+        } else {
+            // Handle the case where location permission is not granted
+            Log.e("ExploreFragment", "Location permission not granted")
+        }
+    }
+
 
     private fun getData(){
         val firestore = FirebaseFirestore.getInstance()

@@ -1,25 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="100dp"
+    android:background="@color/white"
     tools:context=".ui.fragments.SignupFragment">
 
-    <androidx.cardview.widget.CardView
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="109dp"
+        android:layout_marginBottom="36dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Tengeneza"
+        android:textColor="@color/green"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/descrpText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:cardElevation="1dp"
-        app:cardCornerRadius="0dp">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="38"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/goToLoginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="355dp"
+        android:layout_marginBottom="50dp"
+        android:background="@color/white"
+        android:clickable="true"
+        android:src="@drawable/baseline_arrow_back_24"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/green" />
+
+    <TextView
+        android:id="@+id/descrpText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="124dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Inscription"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="411dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="100dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goToLoginButton">
 
         <LinearLayout
-            android:layout_margin="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/LoginFragmentContainer"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="12dp"
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -28,13 +103,13 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/signupEmail"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Adresse email"
                     android:inputType="textEmailAddress"
-                    android:hint="Email"/>
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="12dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -42,19 +117,19 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 app:counterEnabled="true"
                 app:counterMaxLength="15"
-                app:passwordToggleEnabled="true"
-                android:layout_marginTop="12dp">
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/signupPassword"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mot de passe"
                     android:inputType="textPassword"
-                    android:hint="Password"/>
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="12dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,39 +137,39 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 app:counterEnabled="true"
                 app:counterMaxLength="15"
-                app:passwordToggleEnabled="true"
-                android:layout_marginTop="12dp">
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signupConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/signupConfirmPassword"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="12dp"
+                    android:hint="Repetez le mot de passe"
                     android:inputType="textPassword"
-                    android:hint="Confirm password"/>
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="12dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/loginRedirectText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/loginRedirectText"
-                android:text="Deja utilisateur? Connectez-vous"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:text="Deja utilisateur? Connectez-vous" />
 
             <com.google.android.material.button.MaterialButton
-                android:layout_width="200dp"
+                android:id="@+id/signupButton"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-                android:id="@+id/signupButton"
-                android:text="Inscrivez-vous"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_marginTop="30dp"
-                android:layout_gravity="center"/>
+                android:text="Inscrivez-vous" />
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/googleSignInButton"
@@ -102,12 +177,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp" />
-
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

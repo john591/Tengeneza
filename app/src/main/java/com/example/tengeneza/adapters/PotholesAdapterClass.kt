@@ -3,6 +3,7 @@ package com.example.tengeneza.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +12,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.tengeneza.R
 import com.example.tengeneza.models.PotholeData
 
-class PotholesAdapterClass(private val dataList: ArrayList<PotholeData>): RecyclerView.Adapter<PotholesAdapterClass.ViewHolderClass>() {
+interface PotholeItemClickListener {
+    fun onOpenMapClicked(geoPoint: String)
+}
+
+class PotholesAdapterClass(
+    private val dataList: ArrayList<PotholeData>,
+    private val itemClickListener: PotholeItemClickListener
+): RecyclerView.Adapter<PotholesAdapterClass.ViewHolderClass>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderClass {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.potholes_item_layout, parent, false)
@@ -33,6 +41,12 @@ class PotholesAdapterClass(private val dataList: ArrayList<PotholeData>): Recycl
             .load(currentItem.potholeImage)
             .apply(RequestOptions().centerCrop())
             .into(holder.rvPoholeImage)
+
+        holder.openMapButton.setOnClickListener {
+            val geoPoint =
+                "${currentItem.geoPoint?.latitude},${currentItem.geoPoint?.longitude}"
+            itemClickListener.onOpenMapClicked(geoPoint)
+        }
     }
 
     class ViewHolderClass(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -41,6 +55,7 @@ class PotholesAdapterClass(private val dataList: ArrayList<PotholeData>): Recycl
         val rvStreetAddress: TextView = itemView.findViewById(R.id.streetAddress)
         val rvCity: TextView = itemView.findViewById(R.id.city)
         val rvPoholeImage:ImageView = itemView.findViewById(R.id.potholeImage)
+        val openMapButton: Button = itemView.findViewById(R.id.button_open_map)
     }
 
 }
