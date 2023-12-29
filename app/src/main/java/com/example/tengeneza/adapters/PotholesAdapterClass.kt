@@ -3,7 +3,6 @@ package com.example.tengeneza.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -43,6 +42,7 @@ class PotholesAdapterClass(
             .into(holder.rvPoholeImage)
 
         holder.openMapButton.setOnClickListener {
+           // Toast.makeText(this, "Google Maps", Toast.LENGTH_SHORT).show()
             val geoPoint =
                 "${currentItem.geoPoint?.latitude},${currentItem.geoPoint?.longitude}"
             itemClickListener.onOpenMapClicked(geoPoint)
@@ -55,7 +55,7 @@ class PotholesAdapterClass(
         val rvStreetAddress: TextView = itemView.findViewById(R.id.streetAddress)
         val rvCity: TextView = itemView.findViewById(R.id.city)
         val rvPoholeImage:ImageView = itemView.findViewById(R.id.potholeImage)
-        val openMapButton: Button = itemView.findViewById(R.id.button_open_map)
+        val openMapButton: ImageView = itemView.findViewById(R.id.button_open_map)
     }
 
 }

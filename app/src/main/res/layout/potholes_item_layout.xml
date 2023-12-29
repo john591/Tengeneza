@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="0dp"
-        app:cardElevation="0dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
         app:cardBackgroundColor="@color/white">
 
     <LinearLayout
@@ -77,24 +78,42 @@
                 android:textSize="16sp"
                 android:contentDescription="Clickable GeoPoint" />
 
-            <Button
+        <!-- LinearLayout for icons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/menu_icon1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_lock_24"
+                android:layout_margin="8dp"/>
+
+            <ImageView
+                android:id="@+id/menu_icon2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_add_24"
+                android:layout_margin="8dp"/>
+
+            <ImageView
                 android:id="@+id/button_open_map"
-                android:layout_width="68dp"
-                android:layout_height="48dp"
-                style="@style/Widget.MaterialComponents.Button"
-                android:text="Tenge"
-                android:textSize="10sp"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="8dp"
-                app:backgroundTint="@color/green2"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_fmd_good_24"
+                android:layout_margin="8dp"/>
+        </LinearLayout>
 
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
-    <View
+    <!--View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@drawable/dotted_border"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"/-->
 
 </FrameLayout>

@@ -152,7 +152,7 @@ class ExploreFragment : Fragment(), PotholeItemClickListener {
 
                         val displayPotholeData = PotholeData(
                             pothole.id,
-                            pothole.currentUser,
+                            //pothole.currentUser,
                             pothole.name,
                             pothole.countryCode,
                             pothole.countryName,

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tengeneza.R
 import com.example.tengeneza.databinding.ActivitySplashScreenBinding
+import com.example.tengeneza.ui.fragments.HomeActivity
 import java.util.Timer
 import java.util.TimerTask
 
@@ -23,7 +24,7 @@ class SplashScreenActivity : AppCompatActivity() {
         Timer().schedule(object : TimerTask() {
             override fun run() {
                 // Start the main activity after the splash duration
-                startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
+                startActivity(Intent(this@SplashScreenActivity, HomeActivity::class.java))
                 finish()
             }
         }, splashDuration)

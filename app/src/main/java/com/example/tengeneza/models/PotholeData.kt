@@ -5,7 +5,6 @@ import java.io.Serializable
 
 data class PotholeData(
     var id: String? = null,
-    var currentUser: String ?= null,
     var name: String ?= null,
     var countryCode: String ?= null,
     var countryName: String ?= null,

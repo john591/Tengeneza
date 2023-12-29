@@ -33,7 +33,6 @@ import com.example.tengeneza.databinding.FragmentReportBinding
 import com.example.tengeneza.models.TengenezaData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.storage.FirebaseStorage
@@ -61,7 +60,7 @@ class ReportFragment : Fragment() {
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
 
     // Get the current Firebase user
-    private val currentUser = FirebaseAuth.getInstance().currentUser
+    //private val currentUser = FirebaseAuth.getInstance().currentUser
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -104,8 +103,8 @@ class ReportFragment : Fragment() {
         initVars()
         registerClickEvents()
 
-        binding.currentuserIdView.text = currentUser?.uid
-        binding.currentuserEmailView.text = currentUser?.email
+        //binding.currentuserIdView.text = currentUser?.uid
+        //binding.currentuserEmailView.text = currentUser?.email
 
         // Set up the listeners for take photo and video capture buttons
         binding.imageCaptureButton.setOnClickListener {
@@ -186,7 +185,7 @@ class ReportFragment : Fragment() {
                                     val countryName = address.countryName
                                     val postalCode = address.postalCode
 
-                                    val sharedPreferences = requireContext().getSharedPreferences("LocationPotholesData", Context.MODE_PRIVATE)
+                                    /*val sharedPreferences = requireContext().getSharedPreferences("LocationPotholesData", Context.MODE_PRIVATE)
                                     val editor = sharedPreferences.edit()
                                     // Save data
                                     editor.putString("streetAdress", streetAddress)
@@ -197,21 +196,21 @@ class ReportFragment : Fragment() {
                                     editor.putString("countryCode", countryCode)
                                     editor.putString("postalCode", postalCode)
                                     // Apply changes
-                                    editor.apply()
+                                    editor.apply()*/
 
-                                    binding.countryCodeView.text= countryCode
+                                    /*binding.countryCodeView.text= countryCode
                                     binding.postalCodeView.text= postalCode
                                     binding.countryNameView.text= countryName
                                     binding.cityView.text= city
-                                    binding.streetView.text= streetAddress
+                                    binding.streetView.text= streetAddress*/
                                 }
 
                                 override fun onError(errorMessage: String?) {
                                     super.onError(errorMessage)
                                 }
                             })
-                        binding.latitudeView.text = latitude.toString()
-                        binding.longitudeView.text= longitude.toString()
+                        /*binding.latitudeView.text = latitude.toString()
+                        binding.longitudeView.text= longitude.toString()*/
                     }
 
                 }
@@ -405,8 +404,8 @@ class ReportFragment : Fragment() {
                     val geoPoint = GeoPoint(latitude,longitude)
                     val potholeImage = PotholeImageData.getString("potholeImage","jpg")
 
-                    val user = currentUser?.uid
-                    val locationPothole = TengenezaData(user.toString(),currentDateTimeString,potholeImage.toString(), name, geoPoint, streetAddress.toString(),city.toString(), countryCode.toString(), countryName.toString(), postalCode.toString())
+                    //val user = currentUser?.uid
+                    val locationPothole = TengenezaData(currentDateTimeString,potholeImage.toString(), name, geoPoint, streetAddress.toString(),city.toString(), countryCode.toString(), countryName.toString(), postalCode.toString())
                     val collectionReference = dB.collection("potholesDataCollection") // Here I have to change the collection. "potholesReports"
                     // Add the data to Firestore
                     collectionReference.add(locationPothole)
@@ -534,7 +533,7 @@ class ReportFragment : Fragment() {
     }
 
     companion object {
-        private const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
+        const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
         private const val TAG = "ReportFragment"
         private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss" //yyyy-MM-dd-HH-mm-ss-SSS
         private val REQUIRED_PERMISSIONS =
